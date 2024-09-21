@@ -3,7 +3,7 @@ import tkinter as tk
 from tkinter import ttk
 import random
 
-from obdpi.obd_max import OBDReader
+from obd_max import OBDReader
 
 
 class FahrzeugdatenGUI:
