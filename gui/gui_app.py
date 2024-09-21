@@ -3,7 +3,7 @@ import tkinter as tk
 from tkinter import ttk
 import random
 
-from obd_max import OBDReader
+from obdpi.obd_max import OBDReader
 
 
 class FahrzeugdatenGUI:
@@ -190,6 +190,13 @@ class FahrzeugdatenGUI:
         # Beendet den OBD-Leser, wenn das Fenster geschlossen wird
         self.obd_reader.stop_reading()
         self.root.destroy()
+
+
+def main():
+    root = tk.Tk()
+    gui = FahrzeugdatenGUI(root)
+    root.protocol("WM_DELETE_WINDOW", gui.on_close)  # Aufräumen beim Schließen
+    root.mainloop()
 
 
 # Hauptprogramm

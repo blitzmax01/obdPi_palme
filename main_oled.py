@@ -23,7 +23,7 @@ def init_serial(is_testing, environment):
             return "SUCCESS"
         else:
             return "FAIL"
-    except Exception, e:
+    except Exception as e:
         return "[EXCEPTION] " + str(e)
 
 
@@ -36,7 +36,7 @@ def init_obd(connection_id):
             return "SUCCESS"
         else:
             return "FAIL"
-    except Exception, e:
+    except Exception as e:
         return "[EXCEPTION] " + str(e)
 
 
@@ -46,19 +46,21 @@ def get_obd_response(obd_command):
     try:
         obd_response = str(obd_man.generate_obd_response(obd_command))
         return obd_response
-    except Exception, e:
+    except Exception as e:
         return "[EXCEPTION] " + str(e)
 
 
 def start(cmd):
     while True:
-        if init_serial(obdpi.shared_settings.is_testing, obdpi.shared_settings.environment):
+        if init_serial(
+            obdpi.shared_settings.is_testing, obdpi.shared_settings.environment
+        ):
             if init_obd(ser_man.connection_id):
                 break
         sleep(1.0)
     while True:
         obd_response = str(get_obd_response(cmd))
-        sleep(0.15)     # May need to adjust for clean interruption upon shutdown
+        sleep(0.15)  # May need to adjust for clean interruption upon shutdown
 
 
 @oled_man.oled_event_decorator("Ending Script")
@@ -69,7 +71,7 @@ def end():
 
 
 if __name__ == "__main__":
-    if len(sys.argv) > 1: 
+    if len(sys.argv) > 1:
         obd_command = str(sys.argv[1])
     elif obdpi.shared_settings.obd_command is not None:
         obd_command = str(obdpi.shared_settings.obd_command)
