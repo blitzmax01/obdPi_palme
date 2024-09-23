@@ -1,4 +1,4 @@
-from gui import gui_app as gui
+from gui import tk_gui as gui
 
 
 def main():
