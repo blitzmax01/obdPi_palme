@@ -23,25 +23,30 @@ class OBDReader:
         self.callback = callback
         self.running = False  # Steuert, ob der Leser läuft
 
-    def find_supported_pids(self):
+    def find_supported_pids_for_mode(self, mode=1):
         """
-        Prüft alle PIDs und trägt die verfügbaren in self.commands ein.
+        Prüft verfügbare PIDs für ein bestimmtes Steuergerät bzw. Mode.
+        Standardmäßig wird Mode 1 (Motorsteuergerät) verwendet.
         """
         # Überprüfen, ob eine OBD-Verbindung vorhanden ist
         if self.connection.status() == obd.OBDStatus.NOT_CONNECTED:
             print("OBD-II Dongle nicht verbunden!")
             return
 
-        # Alle unterstützten PIDs des Fahrzeugs durchgehen
-        for command in obd.commands[
-            1:
-        ]:  # Start bei Index 1, da Index 0 allgemeine "nicht definierte" Kommandos enthält
-            if command in self.connection.supported_commands:
-                # Hier kannst du die Beschreibung oder den Namen des Befehls verwenden
-                self.commands[command.name] = command
+        # Erstellt eine Liste der PIDs im gewählten Modus
+        available_commands = obd.commands[mode]  # Befehl für den Modus abrufen
+        supported_commands = []
 
-        # Ausgabe zur Kontrolle, welche PIDs unterstützt werden
-        print("Verfügbare OBD-II PIDs:")
+        # Unterstützte PIDs durchgehen und prüfen
+        for command in available_commands:
+            if command in self.connection.supported_commands:
+                supported_commands.append(command)
+
+        # Speichere die gefundenen PIDs in self.commands
+        self.commands = {cmd.name: cmd for cmd in supported_commands}
+
+        # Zeige die verfügbaren PIDs an
+        print(f"Verfügbare PIDs für Modus {mode}:")
         for name, cmd in self.commands.items():
             print(f"{name}: {cmd}")
 
@@ -122,7 +127,8 @@ def main():
     obd_thread.start()
 
     # Verfügbare PIDs suchen
-    obd_reader.find_supported_pids()
+    obd_reader.find_supported_pids_for_mode(1)  # Motor
+    obd_reader.find_supported_pids_for_mode(2)  # Getriebe
 
     # Starte die Überwachung der gefundenen OBD-II PIDs
     # obd_reader.start_reading()
