@@ -2,17 +2,6 @@ import obd
 import threading
 import time
 
-VehicleData = {
-    "Watertemp": "90°C",
-    "Oiltemp": "80°C",
-    "RPM": "3000 U/min",
-    "Speed": "100 km/h",
-    "Boost": "1.2 bar",
-    "Battery": "13.8V",
-    "MAF": "5 g/s",
-    "FuelPressure": "3.5 bar",
-}
-
 
 class OBDReader:
     def __init__(self, callback):
@@ -103,18 +92,7 @@ class OBDReader:
 
 
 def update_vehicle_data(name, value):
-    # Funktion zum Aktualisieren des VehicleData-Dictionary
-    if name in VehicleData:
-        VehicleData[name] = value
-    else:
-        VehicleData[name] = "N/A"  # Wenn der Wert nicht vorhanden ist, "N/A" hinzufügen
-
-    # Druckt die aktualisierten Fahrzeugdaten
     print(f"{name}: {value}")
-    print("Aktuelle Fahrzeugdaten:")
-    for key, val in VehicleData.items():
-        print(f"{key}: {val}")
-    print("\n")  # Neue Zeile für bessere Lesbarkeit
 
 
 def main():
@@ -130,7 +108,7 @@ def main():
     obd_reader.find_supported_pids_for_mode(2)  # Getriebe
 
     # Starte die Überwachung der gefundenen OBD-II PIDs
-    # obd_reader.start_reading()
+    obd_reader.start_reading()
 
     try:
         while True:
