@@ -2,6 +2,18 @@ import obd
 import threading
 import time
 
+# Dictionary, das Fahrzeugdaten enthält
+VehicleData = {
+    "Watertemp": "90°C",
+    "Oiltemp": "80°C",
+    "RPM": "3000 U/min",
+    "Speed": "100 km/h",
+    "Boost": "1.2 bar",
+    "Battery": "13.8V",
+    "MAF": "5 g/s",
+    "FuelPressure": "3.5 bar",
+}
+
 
 class OBDReader:
     def __init__(self, callback):
@@ -12,6 +24,28 @@ class OBDReader:
             callback  # Diese Funktion wird aufgerufen, um Daten an die GUI zu senden
         )
         self.running = False  # Steuert, ob der Leser läuft
+
+    def find_supported_pids(self):
+        """
+        Prüft alle PIDs und trägt die verfügbaren in self.commands ein.
+        """
+        # Überprüfen, ob eine OBD-Verbindung vorhanden ist
+        if self.connection.status() == obd.OBDStatus.NOT_CONNECTED:
+            print("OBD-II Dongle nicht verbunden!")
+            return
+
+        # Alle unterstützten PIDs des Fahrzeugs durchgehen
+        for command in obd.commands[
+            1:
+        ]:  # Start bei Index 1, da Index 0 allgemeine "nicht definierte" Kommandos enthält
+            if command in self.connection.supported_commands:
+                # Hier kannst du die Beschreibung oder den Namen des Befehls verwenden
+                self.commands[command.name] = command
+
+        # Ausgabe zur Kontrolle, welche PIDs unterstützt werden
+        print("Verfügbare OBD-II PIDs:")
+        for name, cmd in self.commands.items():
+            print(f"{name}: {cmd}")
 
     def start_reading(self):
         # Überprüft, ob die Verbindung erfolgreich hergestellt wurde
@@ -46,7 +80,9 @@ class OBDReader:
         def _callback(response):
             if response.value is not None:
                 value = response.value.to("°C") if "Temp" in name else response.value
-                self.callback(name, str(value))  # Daten an GUI übergeben
+                self.callback(
+                    name, str(value)
+                )  # Daten an die Callback-Funktion (GUI) übergeben
 
         return _callback
 
@@ -64,5 +100,42 @@ class OBDReader:
             time.sleep(1)
 
 
+def update_vehicle_data(name, value):
+    # Funktion zum Aktualisieren des VehicleData-Dictionary
+    if name in VehicleData:
+        VehicleData[name] = value
+    else:
+        VehicleData[name] = "N/A"  # Wenn der Wert nicht vorhanden ist, "N/A" hinzufügen
+
+    # Druckt die aktualisierten Fahrzeugdaten
+    print(f"{name}: {value}")
+    print("Aktuelle Fahrzeugdaten:")
+    for key, val in VehicleData.items():
+        print(f"{key}: {val}")
+    print("\n")  # Neue Zeile für bessere Lesbarkeit
+
+
 def main():
-    pass
+    obd_reader = OBDReader(update_vehicle_data)
+
+    # Starte den OBD-Leser in einem separaten Thread
+    obd_thread = threading.Thread(target=obd_reader.run)
+    obd_thread.daemon = True  # Daemon-Thread, damit er automatisch beendet wird
+    obd_thread.start()
+
+    # Verfügbare PIDs suchen
+    obd_reader.find_supported_pids()
+
+    # Starte die Überwachung der gefundenen OBD-II PIDs
+    # obd_reader.start_reading()
+
+    try:
+        while True:
+            time.sleep(1)  # Haupt-Thread läuft weiter, während OBD asynchron arbeitet
+    except KeyboardInterrupt:
+        # Aufräumen und beenden, wenn das Programm mit STRG+C gestoppt wird
+        obd_reader.stop_reading()
+
+
+if __name__ == "__main__":
+    main()
