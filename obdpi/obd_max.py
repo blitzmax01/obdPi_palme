@@ -2,7 +2,6 @@ import obd
 import threading
 import time
 
-# Dictionary, das Fahrzeugdaten enthält
 VehicleData = {
     "Watertemp": "90°C",
     "Oiltemp": "80°C",
@@ -18,7 +17,7 @@ VehicleData = {
 class OBDReader:
     def __init__(self, callback):
         # Versucht, eine OBD-Verbindung herzustellen
-        self.commands = None
+        self.commands = {}
         self.connection = obd.Async()  # Asynchrone OBD-Verbindung
         self.callback = callback
         self.running = False  # Steuert, ob der Leser läuft
