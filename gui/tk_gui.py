@@ -16,14 +16,14 @@ class FahrzeugdatenGUI:
 
         # Daten initialisieren (Beispielwerte für Seite 1)
         self.fahrzeugdaten = {
-            "Wassertemperatur": "90°C",
-            "Öltemperatur": "80°C",
-            "Drehzahl": "3000 U/min",
-            "Geschwindigkeit": "100 km/h",
-            "Ladedruck": "1.2 bar",
-            "Batteriespannung": "13.8V",
-            "Luftmassenmesser": "5 g/s",
-            "Kraftstoffdruck": "3.5 bar",
+            "Watertemp": "90°C",
+            "Oiltemp": "80°C",
+            "RPM": "3000 U/min",
+            "Speed": "100 km/h",
+            "Boost": "1.2 bar",
+            "Battery": "13.8V",
+            "MAF": "5 g/s",
+            "FuelPressure": "3.5 bar",
         }
 
         # Daten für Seite 2
@@ -97,7 +97,7 @@ class FahrzeugdatenGUI:
         # Buttons zum Wechseln der Seiten auf beiden Seiten hinzufügen
         button_seite_1 = tk.Button(
             self.frame_seite_1,
-            text="Zu Seite 2 wechseln",
+            text="Page 2",
             command=lambda: self.show_frame(self.frame_seite_2),
             height=2,
             width=20,
@@ -108,7 +108,7 @@ class FahrzeugdatenGUI:
 
         button_seite_2 = tk.Button(
             self.frame_seite_2,
-            text="Zu Seite 1 wechseln",
+            text="Page 1",
             command=lambda: self.show_frame(self.frame_seite_1),
             height=2,
             width=20,
@@ -120,9 +120,6 @@ class FahrzeugdatenGUI:
         # Starte mit Seite 1
         self.show_frame(self.frame_seite_1)
 
-        # Update-Funktion regelmäßig aufrufen
-        self.update_values()
-
     # Funktion zum Umschalten zwischen Seiten
     def show_frame(self, frame):
         frame.tkraise()
@@ -133,52 +130,6 @@ class FahrzeugdatenGUI:
             if key == name:
                 box[1].config(text=value)
                 self.fahrzeugdaten[key] = value
-
-    def start_obd_reader(self):
-        # Starte den OBD-Leser in einem separaten Thread
-        obd_thread = threading.Thread(target=self.obd_reader.run)
-        obd_thread.daemon = True  # Daemon-Thread, damit er automatisch beendet wird
-        obd_thread.start()
-
-    def update_values(self):
-        # Simuliere oder lese Daten hier z.B. von einem OBD-II Dongle
-        self.fahrzeugdaten["Wassertemperatur"] = f"{random.randint(80, 100)}°C"
-        self.fahrzeugdaten["Öltemperatur"] = f"{random.randint(70, 90)}°C"
-        self.fahrzeugdaten["Drehzahl"] = f"{random.randint(1000, 5000)} U/min"
-        self.fahrzeugdaten["Geschwindigkeit"] = f"{random.randint(0, 220)} km/h"
-        self.fahrzeugdaten["Ladedruck"] = f"{random.uniform(0.5, 2.0):.1f} bar"
-        self.fahrzeugdaten["Batteriespannung"] = f"{random.uniform(12.5, 14.5):.1f}V"
-        self.fahrzeugdaten["Luftmassenmesser"] = f"{random.uniform(4, 7):.1f} g/s"
-        self.fahrzeugdaten["Kraftstoffdruck"] = f"{random.uniform(2.5, 4.0):.1f} bar"
-
-        # Optional: Update der Werte für Seite 2
-        self.fahrzeugdaten_seite_2["Motorlast"] = f"{random.randint(50, 100)}%"
-        self.fahrzeugdaten_seite_2["Lambdawert"] = f"{random.uniform(0.85, 1.05):.2f}"
-        self.fahrzeugdaten_seite_2["Ansauglufttemperatur"] = (
-            f"{random.randint(20, 35)}°C"
-        )
-        self.fahrzeugdaten_seite_2["Saugrohrdruck"] = (
-            f"{random.uniform(0.8, 1.2):.2f} bar"
-        )
-        self.fahrzeugdaten_seite_2["Abgastemperatur"] = f"{random.randint(300, 500)}°C"
-        self.fahrzeugdaten_seite_2["Fahrzeit"] = "1h 25min"  # Beispielwert
-        self.fahrzeugdaten_seite_2["Kraftstoffverbrauch"] = (
-            f"{random.uniform(6.0, 10.0):.1f} L/100km"
-        )
-        self.fahrzeugdaten_seite_2["CO2-Ausstoß"] = f"{random.randint(100, 150)} g/km"
-
-        # Aktualisieren der Werte in den Labels auf Seite 1
-        for box, (key, label) in zip(self.boxen_seite_1, self.fahrzeugdaten.items()):
-            box[1].config(text=self.fahrzeugdaten[key])
-
-        # Aktualisieren der Werte in den Labels auf Seite 2
-        for box, (key, label) in zip(
-            self.boxen_seite_2, self.fahrzeugdaten_seite_2.items()
-        ):
-            box[1].config(text=self.fahrzeugdaten_seite_2[key])
-
-        # Timer für erneutes Update (hier z.B. alle 1000ms = 1 Sekunde)
-        # self.root.after(1000, self.update_values)
 
     def start_obd_reader(self):
         # Starte den OBD-Leser in einem separaten Thread
@@ -201,7 +152,4 @@ def main():
 
 # Hauptprogramm
 if __name__ == "__main__":
-    root = tk.Tk()
-    gui = FahrzeugdatenGUI(root)
-    root.protocol("WM_DELETE_WINDOW", gui.on_close)  # Aufräumen beim Schließen
-    root.mainloop()
+    main()

@@ -10,6 +10,7 @@ def main():
     app = QtWidgets.QApplication(sys.argv)
     window = QtWidgets.QMainWindow()
     window.setWindowTitle("Dashboard")
+    window.setStyleSheet("background-color: black")
 
     ui_window = Ui_MainWindow()
     ui_window.setupUi(window)

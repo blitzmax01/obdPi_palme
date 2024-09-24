@@ -11,25 +11,12 @@
    </rect>
   </property>
   <property name="windowTitle">
-   <string>MainWindow</string>
+   <string>Dashboard</string>
+  </property>
+  <property name="autoFillBackground">
+   <bool>false</bool>
   </property>
   <widget class="QWidget" name="centralwidget">
-   <widget class="QSlider" name="horizontalSlider">
-    <property name="geometry">
-     <rect>
-      <x>340</x>
-      <y>280</y>
-      <width>160</width>
-      <height>16</height>
-     </rect>
-    </property>
-    <property name="maximum">
-     <number>100</number>
-    </property>
-    <property name="orientation">
-     <enum>Qt::Horizontal</enum>
-    </property>
-   </widget>
    <widget class="QPushButton" name="pushButton">
     <property name="geometry">
      <rect>
@@ -49,7 +36,7 @@
       <x>0</x>
       <y>0</y>
       <width>240</width>
-      <height>240</height>
+      <height>301</height>
      </rect>
     </property>
     <property name="title">
@@ -112,6 +99,164 @@
       <bool>false</bool>
      </property>
     </widget>
+    <widget class="QSlider" name="horizontalSlider">
+     <property name="geometry">
+      <rect>
+       <x>40</x>
+       <y>260</y>
+       <width>160</width>
+       <height>16</height>
+      </rect>
+     </property>
+     <property name="maximum">
+      <number>100</number>
+     </property>
+     <property name="orientation">
+      <enum>Qt::Horizontal</enum>
+     </property>
+    </widget>
+   </widget>
+   <widget class="QGroupBox" name="water_temp_gb">
+    <property name="geometry">
+     <rect>
+      <x>300</x>
+      <y>0</y>
+      <width>240</width>
+      <height>240</height>
+     </rect>
+    </property>
+    <property name="title">
+     <string>water_temp_gb</string>
+    </property>
+    <widget class="QLabel" name="water_temp_bg_label">
+     <property name="geometry">
+      <rect>
+       <x>0</x>
+       <y>0</y>
+       <width>240</width>
+       <height>240</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string/>
+     </property>
+     <property name="pixmap">
+      <pixmap>../oil_temp_pictures/bg_240x240px.png</pixmap>
+     </property>
+     <property name="scaledContents">
+      <bool>true</bool>
+     </property>
+    </widget>
+    <widget class="QLabel" name="water_temp_value">
+     <property name="geometry">
+      <rect>
+       <x>89</x>
+       <y>194</y>
+       <width>61</width>
+       <height>41</height>
+      </rect>
+     </property>
+     <property name="midLineWidth">
+      <number>-1</number>
+     </property>
+     <property name="text">
+      <string>0</string>
+     </property>
+     <property name="alignment">
+      <set>Qt::AlignCenter</set>
+     </property>
+    </widget>
+    <widget class="QLabel" name="water_temp_gauge">
+     <property name="geometry">
+      <rect>
+       <x>11</x>
+       <y>11</y>
+       <width>210</width>
+       <height>170</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string/>
+     </property>
+     <property name="pixmap">
+      <pixmap>../oil_temp_pictures/temp_cold.png</pixmap>
+     </property>
+     <property name="scaledContents">
+      <bool>false</bool>
+     </property>
+    </widget>
+   </widget>
+   <widget class="QWidget" name="verticalLayoutWidget">
+    <property name="geometry">
+     <rect>
+      <x>550</x>
+      <y>10</y>
+      <width>241</width>
+      <height>231</height>
+     </rect>
+    </property>
+    <layout class="QVBoxLayout" name="verticalLayout">
+     <item>
+      <widget class="QLabel" name="tempo_lb">
+       <property name="text">
+        <string>Tempo</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QProgressBar" name="tempo_bar">
+       <property name="maximum">
+        <number>300</number>
+       </property>
+       <property name="value">
+        <number>24</number>
+       </property>
+       <property name="format">
+        <string>%p %</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QLabel" name="rpm_lb">
+       <property name="text">
+        <string>RPM</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QProgressBar" name="rpm_bar">
+       <property name="maximum">
+        <number>7000</number>
+       </property>
+       <property name="value">
+        <number>1000</number>
+       </property>
+       <property name="format">
+        <string notr="true">%p %</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QLabel" name="fuel_lb">
+       <property name="text">
+        <string>Fuel level</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QProgressBar" name="fuel_bar">
+       <property name="maximum">
+        <number>7000</number>
+       </property>
+       <property name="value">
+        <number>1000</number>
+       </property>
+       <property name="format">
+        <string notr="true">%p %</string>
+       </property>
+      </widget>
+     </item>
+    </layout>
    </widget>
   </widget>
   <widget class="QMenuBar" name="menubar">

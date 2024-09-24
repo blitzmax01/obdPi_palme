@@ -23,14 +23,14 @@ class OBDReader:
 
         # Abfragen, die wir benötigen
         self.commands = {
-            "Wassertemperatur": obd.commands.COOLANT_TEMP,
-            "Öltemperatur": obd.commands.OIL_TEMP,
-            "Drehzahl": obd.commands.RPM,
-            "Geschwindigkeit": obd.commands.SPEED,
-            "Ladedruck": obd.commands.BAROMETRIC_PRESSURE,
-            "Batteriespannung": obd.commands.CONTROL_MODULE_VOLTAGE,
-            "Luftmassenmesser": obd.commands.MAF,
-            "Kraftstoffdruck": obd.commands.FUEL_PRESSURE,
+            "Watertemp": obd.commands.COOLANT_TEMP,
+            "Oiltemp": obd.commands.OIL_TEMP,
+            "RPM": obd.commands.RPM,
+            "Speed": obd.commands.SPEED,
+            "Boost": obd.commands.BAROMETRIC_PRESSURE,
+            "Battery": obd.commands.CONTROL_MODULE_VOLTAGE,
+            "MAF": obd.commands.MAF,
+            "FuelPressure": obd.commands.FUEL_PRESSURE,
         }
 
         # Asynchrone Abfragen für jedes Kommando starten
@@ -62,3 +62,7 @@ class OBDReader:
                 print("Verbindung verloren!")
                 self.stop_reading()
             time.sleep(1)
+
+
+def main():
+    pass
