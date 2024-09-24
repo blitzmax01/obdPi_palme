@@ -20,9 +20,7 @@ class OBDReader:
         # Versucht, eine OBD-Verbindung herzustellen
         self.commands = None
         self.connection = obd.Async()  # Asynchrone OBD-Verbindung
-        self.callback = (
-            callback  # Diese Funktion wird aufgerufen, um Daten an die GUI zu senden
-        )
+        self.callback = callback
         self.running = False  # Steuert, ob der Leser läuft
 
     def find_supported_pids(self):
